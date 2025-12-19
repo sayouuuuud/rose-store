@@ -22,7 +22,7 @@ export function HeroSection() {
     if (src.startsWith("data:image")) return src
     if (src.includes("/placeholder.svg")) return src
     if (src.startsWith("http")) return src
-    // For local file paths, use placeholder with descriptive query
+    // For local file paths that don't exist, use placeholder
     return "/beautiful-pink-roses-flower-arrangement-elegant.jpg"
   }
 

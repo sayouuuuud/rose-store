@@ -55,6 +55,12 @@ export function QuizClient() {
     }
   }, [selectedQuizId, quizzes])
 
+  useEffect(() => {
+    if (mounted && quizzes.length > 0 && !selectedQuizId) {
+      setSelectedQuizId(quizzes[0].id)
+    }
+  }, [mounted, quizzes, selectedQuizId])
+
   const handleCreateQuiz = () => {
     addQuiz(emptyQuiz)
     // Select the newly created quiz
@@ -162,7 +168,7 @@ export function QuizClient() {
 
   if (!mounted) {
     return (
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-gray-200 rounded w-1/4"></div>
           <div className="h-64 bg-gray-200 rounded"></div>
@@ -174,33 +180,35 @@ export function QuizClient() {
   const t = adminTranslations.sidebar
 
   return (
-    <div className={cn("p-6", isRTL && "font-arabic")} dir={isRTL ? "rtl" : "ltr"}>
+    <div className={cn("p-4 md:p-6", isRTL && "font-arabic")} dir={isRTL ? "rtl" : "ltr"}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-serif text-rose-900">
+          <h1 className="text-xl md:text-2xl font-serif text-rose-900">
             {t.quiz?.[locale] || (isRTL ? "اختبارات الأزهار" : "Flower Quizzes")}
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-xs md:text-sm text-muted-foreground mt-1">
             {isRTL ? "إنشاء وإدارة اختبارات الأزهار للزوار" : "Create and manage flower quizzes for visitors"}
           </p>
         </div>
-        <Button onClick={handleCreateQuiz} className="bg-rose-500 hover:bg-rose-600">
+        <Button onClick={handleCreateQuiz} className="bg-rose-500 hover:bg-rose-600 w-full sm:w-auto">
           <Plus className="w-4 h-4 mr-2" />
           {isRTL ? "إنشاء اختبار جديد" : "Create New Quiz"}
         </Button>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* Quiz List */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 space-y-4">
           <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <h2 className="font-semibold text-gray-800 mb-4">{isRTL ? "قائمة الاختبارات" : "Quiz List"}</h2>
+            <h2 className="font-semibold text-gray-800 mb-4 text-sm md:text-base">
+              {isRTL ? "قائمة الاختبارات" : "Quiz List"}
+            </h2>
 
             {quizzes.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
                 <ImageIcon className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                <p>{isRTL ? "لا توجد اختبارات" : "No quizzes yet"}</p>
+                <p className="text-sm">{isRTL ? "لا توجد اختبارات" : "No quizzes yet"}</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -217,7 +225,9 @@ export function QuizClient() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-800 truncate">{isRTL ? quiz.title.ar : quiz.title.en}</p>
+                        <p className="font-medium text-gray-800 truncate text-sm">
+                          {isRTL ? quiz.title.ar : quiz.title.en}
+                        </p>
                         <p className="text-xs text-gray-500">
                           {quiz.questions.length} {isRTL ? "أسئلة" : "questions"}
                         </p>
@@ -237,11 +247,11 @@ export function QuizClient() {
           </div>
 
           {/* Quiz Results */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm mt-4">
+          <div className="bg-white rounded-2xl p-4 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Trophy className="w-5 h-5 text-yellow-500" />
-                <h2 className="font-semibold text-gray-800">
+                <h2 className="font-semibold text-gray-800 text-sm md:text-base">
                   {isRTL ? "النتائج" : "Results"} ({quizResults.length})
                 </h2>
               </div>
@@ -281,9 +291,11 @@ export function QuizClient() {
         {/* Quiz Editor */}
         <div className="lg:col-span-2">
           {editingQuiz ? (
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="font-semibold text-lg text-gray-800">{isRTL ? "تعديل الاختبار" : "Edit Quiz"}</h2>
+            <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <h2 className="font-semibold text-base md:text-lg text-gray-800">
+                  {isRTL ? "تعديل الاختبار" : "Edit Quiz"}
+                </h2>
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
@@ -293,7 +305,7 @@ export function QuizClient() {
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
-                  <Button onClick={handleSave} size="sm" className="bg-rose-500 hover:bg-rose-600">
+                  <Button onClick={handleSave} size="sm" className="bg-rose-500 hover:bg-rose-600 flex-1 sm:flex-none">
                     {saved ? <Check className="w-4 h-4 mr-1" /> : <Save className="w-4 h-4 mr-1" />}
                     {saved ? (isRTL ? "تم!" : "Saved!") : isRTL ? "حفظ" : "Save"}
                   </Button>
@@ -302,9 +314,9 @@ export function QuizClient() {
 
               {/* Quiz Settings */}
               <div className="space-y-4 mb-6">
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>{isRTL ? "عنوان الاختبار (EN)" : "Quiz Title (EN)"}</Label>
+                    <Label className="text-sm">{isRTL ? "عنوان الاختبار (EN)" : "Quiz Title (EN)"}</Label>
                     <Input
                       value={editingQuiz.title.en}
                       onChange={(e) =>
@@ -317,7 +329,7 @@ export function QuizClient() {
                     />
                   </div>
                   <div>
-                    <Label>{isRTL ? "عنوان الاختبار (AR)" : "Quiz Title (AR)"}</Label>
+                    <Label className="text-sm">{isRTL ? "عنوان الاختبار (AR)" : "Quiz Title (AR)"}</Label>
                     <Input
                       value={editingQuiz.title.ar}
                       onChange={(e) =>
@@ -332,9 +344,9 @@ export function QuizClient() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>{isRTL ? "الوصف (EN)" : "Description (EN)"}</Label>
+                    <Label className="text-sm">{isRTL ? "الوصف (EN)" : "Description (EN)"}</Label>
                     <Textarea
                       value={editingQuiz.description.en}
                       onChange={(e) =>
@@ -348,7 +360,7 @@ export function QuizClient() {
                     />
                   </div>
                   <div>
-                    <Label>{isRTL ? "الوصف (AR)" : "Description (AR)"}</Label>
+                    <Label className="text-sm">{isRTL ? "الوصف (AR)" : "Description (AR)"}</Label>
                     <Textarea
                       value={editingQuiz.description.ar}
                       onChange={(e) =>
@@ -365,7 +377,7 @@ export function QuizClient() {
                 </div>
 
                 {/* Active Toggle */}
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div className="flex items-center justify-between p-3 md:p-4 bg-gray-50 rounded-xl">
                   <div className="flex items-center gap-3">
                     {editingQuiz.isActive ? (
                       <Eye className="w-5 h-5 text-green-500" />
@@ -373,8 +385,8 @@ export function QuizClient() {
                       <EyeOff className="w-5 h-5 text-gray-400" />
                     )}
                     <div>
-                      <p className="font-medium text-gray-800">{isRTL ? "تفعيل الاختبار" : "Activate Quiz"}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-gray-800 text-sm">{isRTL ? "تفعيل الاختبار" : "Activate Quiz"}</p>
+                      <p className="text-xs text-gray-500 hidden sm:block">
                         {isRTL ? "سيتم إلغاء تفعيل أي اختبار آخر نشط" : "Any other active quiz will be deactivated"}
                       </p>
                     </div>
@@ -394,20 +406,21 @@ export function QuizClient() {
               {/* Questions */}
               <div className="border-t pt-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-gray-800">
+                  <h3 className="font-semibold text-gray-800 text-sm md:text-base">
                     {isRTL ? "الأسئلة" : "Questions"} ({editingQuiz.questions.length})
                   </h3>
                   <Button onClick={addQuestion} variant="outline" size="sm">
                     <Plus className="w-4 h-4 mr-1" />
-                    {isRTL ? "إضافة سؤال" : "Add Question"}
+                    <span className="hidden sm:inline">{isRTL ? "إضافة سؤال" : "Add Question"}</span>
+                    <span className="sm:hidden">{isRTL ? "إضافة" : "Add"}</span>
                   </Button>
                 </div>
 
                 {editingQuiz.questions.length === 0 ? (
                   <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-xl">
                     <ImageIcon className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                    <p>{isRTL ? "لا توجد أسئلة" : "No questions yet"}</p>
-                    <Button onClick={addQuestion} variant="link" className="mt-2">
+                    <p className="text-sm">{isRTL ? "لا توجد أسئلة" : "No questions yet"}</p>
+                    <Button onClick={addQuestion} variant="link" className="mt-2 text-sm">
                       {isRTL ? "إضافة سؤال جديد" : "Add your first question"}
                     </Button>
                   </div>
@@ -420,24 +433,24 @@ export function QuizClient() {
                           className="flex items-center justify-between p-3 bg-gray-50 cursor-pointer"
                           onClick={() => toggleQuestion(question.id)}
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3 min-w-0 flex-1">
                             {question.image && (
                               <img
                                 src={getImageSrc(question.image) || "/placeholder.svg"}
                                 alt=""
-                                className="w-10 h-10 rounded-lg object-cover"
+                                className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
                               />
                             )}
-                            <div>
-                              <p className="font-medium text-gray-800">
+                            <div className="min-w-0 flex-1">
+                              <p className="font-medium text-gray-800 text-sm">
                                 {isRTL ? `سؤال ${index + 1}` : `Question ${index + 1}`}
                               </p>
-                              <p className="text-sm text-gray-500 truncate max-w-[200px]">
+                              <p className="text-xs text-gray-500 truncate">
                                 {isRTL ? question.questionText.ar : question.questionText.en}
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 flex-shrink-0">
                             <Button
                               variant="ghost"
                               size="sm"
@@ -459,11 +472,11 @@ export function QuizClient() {
 
                         {/* Question Content */}
                         {expandedQuestions[question.id] && (
-                          <div className="p-4 space-y-4">
+                          <div className="p-3 md:p-4 space-y-4">
                             {/* Question Text */}
-                            <div className="grid md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
-                                <Label>{isRTL ? "نص السؤال (EN)" : "Question Text (EN)"}</Label>
+                                <Label className="text-sm">{isRTL ? "نص السؤال (EN)" : "Question Text (EN)"}</Label>
                                 <Input
                                   value={question.questionText.en}
                                   onChange={(e) =>
@@ -475,7 +488,7 @@ export function QuizClient() {
                                 />
                               </div>
                               <div>
-                                <Label>{isRTL ? "نص السؤال (AR)" : "Question Text (AR)"}</Label>
+                                <Label className="text-sm">{isRTL ? "نص السؤال (AR)" : "Question Text (AR)"}</Label>
                                 <Input
                                   value={question.questionText.ar}
                                   onChange={(e) =>
@@ -491,49 +504,53 @@ export function QuizClient() {
 
                             {/* Image Upload */}
                             <div>
-                              <Label className="mb-2 block">
-                                {isRTL ? "صورة السؤال (اختياري)" : "Question Image (Optional)"}
-                              </Label>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                ref={(el) => {
-                                  fileInputRefs.current[question.id] = el
-                                }}
-                                onChange={(e) => handleImageUpload(question.id, e)}
-                                className="hidden"
-                              />
-                              <div className="flex gap-4">
+                              <Label className="text-sm">{isRTL ? "صورة السؤال" : "Question Image"}</Label>
+                              <div className="mt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                                 {question.image ? (
-                                  <div className="relative w-32 h-32 rounded-xl overflow-hidden bg-gray-100">
+                                  <div className="relative">
                                     <img
                                       src={getImageSrc(question.image) || "/placeholder.svg"}
-                                      alt="Question"
-                                      className="w-full h-full object-cover"
+                                      alt=""
+                                      className="w-24 h-24 rounded-lg object-cover"
                                     />
                                     <button
-                                      onClick={() => fileInputRefs.current[question.id]?.click()}
-                                      className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                                      onClick={() => updateQuestion(question.id, { image: "" })}
+                                      className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center"
                                     >
-                                      <Upload className="w-6 h-6" />
+                                      <Trash2 className="w-3 h-3" />
                                     </button>
                                   </div>
                                 ) : (
-                                  <button
-                                    onClick={() => fileInputRefs.current[question.id]?.click()}
-                                    className="w-32 h-32 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-2 text-gray-400 hover:border-rose-400 hover:text-rose-500 transition-colors"
-                                  >
-                                    <Upload className="w-6 h-6" />
-                                    <span className="text-xs">{isRTL ? "رفع صورة" : "Upload"}</span>
-                                  </button>
+                                  <div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                                    <ImageIcon className="w-8 h-8 text-gray-300" />
+                                  </div>
                                 )}
+                                <div>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    ref={(el) => {
+                                      fileInputRefs.current[question.id] = el
+                                    }}
+                                    onChange={(e) => handleImageUpload(question.id, e)}
+                                    className="hidden"
+                                  />
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => fileInputRefs.current[question.id]?.click()}
+                                  >
+                                    <Upload className="w-4 h-4 mr-1" />
+                                    {isRTL ? "رفع صورة" : "Upload Image"}
+                                  </Button>
+                                </div>
                               </div>
                             </div>
 
                             {/* Correct Answer */}
-                            <div className="grid md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
-                                <Label className="text-green-600">
+                                <Label className="text-sm text-green-600">
                                   {isRTL ? "الإجابة الصحيحة (EN)" : "Correct Answer (EN)"}
                                 </Label>
                                 <Input
@@ -548,7 +565,7 @@ export function QuizClient() {
                                 />
                               </div>
                               <div>
-                                <Label className="text-green-600">
+                                <Label className="text-sm text-green-600">
                                   {isRTL ? "الإجابة الصحيحة (AR)" : "Correct Answer (AR)"}
                                 </Label>
                                 <Input
@@ -567,30 +584,32 @@ export function QuizClient() {
 
                             {/* Wrong Answers */}
                             <div>
-                              <Label className="text-red-500 mb-2 block">
+                              <Label className="text-sm text-red-600 mb-2 block">
                                 {isRTL ? "الإجابات الخاطئة" : "Wrong Answers"}
                               </Label>
                               <div className="space-y-3">
-                                {question.wrongAnswers.map((wrongAnswer, wIndex) => (
-                                  <div key={wIndex} className="grid md:grid-cols-2 gap-4">
+                                {question.wrongAnswers.map((wrong, wIndex) => (
+                                  <div key={wIndex} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <Input
-                                      value={wrongAnswer.en}
+                                      value={wrong.en}
                                       onChange={(e) => {
-                                        const newWrongAnswers = [...question.wrongAnswers]
-                                        newWrongAnswers[wIndex] = { ...newWrongAnswers[wIndex], en: e.target.value }
-                                        updateQuestion(question.id, { wrongAnswers: newWrongAnswers })
+                                        const newWrong = [...question.wrongAnswers]
+                                        newWrong[wIndex] = { ...newWrong[wIndex], en: e.target.value }
+                                        updateQuestion(question.id, { wrongAnswers: newWrong })
                                       }}
-                                      placeholder={`Option ${wIndex + 2} (EN)`}
+                                      placeholder={`Wrong answer ${wIndex + 1} (EN)`}
+                                      className="border-red-200"
                                     />
                                     <Input
-                                      value={wrongAnswer.ar}
+                                      value={wrong.ar}
                                       onChange={(e) => {
-                                        const newWrongAnswers = [...question.wrongAnswers]
-                                        newWrongAnswers[wIndex] = { ...newWrongAnswers[wIndex], ar: e.target.value }
-                                        updateQuestion(question.id, { wrongAnswers: newWrongAnswers })
+                                        const newWrong = [...question.wrongAnswers]
+                                        newWrong[wIndex] = { ...newWrong[wIndex], ar: e.target.value }
+                                        updateQuestion(question.id, { wrongAnswers: newWrong })
                                       }}
-                                      placeholder={`الخيار ${wIndex + 2} (AR)`}
+                                      placeholder={`إجابة خاطئة ${wIndex + 1}`}
                                       dir="rtl"
+                                      className="border-red-200"
                                     />
                                   </div>
                                 ))}
@@ -605,13 +624,10 @@ export function QuizClient() {
               </div>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-12 shadow-sm text-center">
+            <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm text-center">
               <ImageIcon className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-              <h3 className="text-lg font-medium text-gray-800 mb-2">
-                {isRTL ? "اختر اختبار للتعديل" : "Select a quiz to edit"}
-              </h3>
-              <p className="text-gray-500 mb-4">
-                {isRTL ? "أو أنشئ اختبار جديد من الزر أعلاه" : "Or create a new quiz using the button above"}
+              <p className="text-gray-500 text-sm md:text-base">
+                {isRTL ? "اختر اختباراً للتعديل أو أنشئ اختباراً جديداً" : "Select a quiz to edit or create a new one"}
               </p>
             </div>
           )}

@@ -317,12 +317,14 @@ const defaultContentSettings: ContentSettings = {
 }
 
 const defaultGalleryImages: GalleryImage[] = [
-  { id: "1", src: "/vibrant-mixed-flower-bouquet-colorful.jpg", alt: "Vibrant mixed flower bouquet" },
-  { id: "2", src: "/roses-in-workspace-elegant-arrangement.jpg", alt: "Roses in workspace" },
-  { id: "3", src: "/delicate-pink-peonies-soft-petals.jpg", alt: "Delicate pink peonies" },
-  { id: "4", src: "/colorful-spring-flower-arrangement.jpg", alt: "Colorful spring arrangement" },
-  { id: "5", src: "/elegant-white-roses-bouquet.jpg", alt: "Elegant white roses" },
-  { id: "6", src: "/lavender-flower-arrangement-purple.jpg", alt: "Lavender arrangement" },
+  { id: "1", src: "/vibrant-mixed-flower-bouquet-colorful-arrangement.jpg", alt: "Vibrant mixed flower bouquet" },
+  { id: "2", src: "/elegant-roses-arrangement-workspace-office.jpg", alt: "Roses in workspace" },
+  { id: "3", src: "/delicate-pink-peonies-soft-petals-romantic.jpg", alt: "Delicate pink peonies" },
+  { id: "4", src: "/colorful-spring-flower-arrangement-tulips-daisies.jpg", alt: "Colorful spring arrangement" },
+  { id: "5", src: "/elegant-white-roses-bouquet-wedding-style.jpg", alt: "Elegant white roses" },
+  { id: "6", src: "/lavender-purple-flower-arrangement-relaxing.jpg", alt: "Lavender arrangement" },
+  { id: "7", src: "/sunflower-bright-yellow-summer-bouquet.jpg", alt: "Sunflower bouquet" },
+  { id: "8", src: "/red-roses-romantic-love-bouquet-elegant.jpg", alt: "Red roses romantic" },
 ]
 
 const defaultReviews: Review[] = [
@@ -462,7 +464,7 @@ const defaultProducts: Product[] = [
       en: "Exquisite harmony bouquet with blush, autumn tones and hints of romance and elegance.",
       ar: "باقة انسجام رائعة بألوان وردية وخريفية ولمسات من الرومانسية والأناقة.",
     },
-    images: ["/pink-roses-bouquet-elegant-blush.jpg"],
+    images: ["/pink-roses-bouquet-elegant-blush-harmony.jpg"],
     colors: ["Baby Pink", "Blush Rose", "Soft Coral"],
     availability: true,
     category: "Bouquets",
@@ -534,6 +536,73 @@ const defaultProducts: Product[] = [
   },
 ]
 
+const defaultQuizzes: Quiz[] = [
+  {
+    id: "quiz-1",
+    title: { en: "Flower Knowledge Quiz", ar: "اختبار معرفة الأزهار" },
+    description: { en: "Test your knowledge about beautiful flowers!", ar: "اختبر معرفتك بالأزهار الجميلة!" },
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    questions: [
+      {
+        id: "q1",
+        image: "/beautiful-red-rose.png",
+        questionText: { en: "What flower is this?", ar: "ما هذه الزهرة؟" },
+        correctAnswer: { en: "Rose", ar: "وردة" },
+        wrongAnswers: [
+          { en: "Tulip", ar: "توليب" },
+          { en: "Lily", ar: "زنبق" },
+          { en: "Daisy", ar: "أقحوان" },
+        ],
+      },
+      {
+        id: "q2",
+        image: "/beautiful-pink-peony-flower.jpg",
+        questionText: { en: "Can you identify this bloom?", ar: "هل يمكنك تحديد هذه الزهرة؟" },
+        correctAnswer: { en: "Peony", ar: "فاوانيا" },
+        wrongAnswers: [
+          { en: "Carnation", ar: "قرنفل" },
+          { en: "Hydrangea", ar: "هيدرانجيا" },
+          { en: "Rose", ar: "وردة" },
+        ],
+      },
+      {
+        id: "q3",
+        image: "/beautiful-white-lily-flower.jpg",
+        questionText: { en: "What is this elegant flower?", ar: "ما هذه الزهرة الأنيقة؟" },
+        correctAnswer: { en: "Lily", ar: "زنبق" },
+        wrongAnswers: [
+          { en: "Orchid", ar: "أوركيد" },
+          { en: "Jasmine", ar: "ياسمين" },
+          { en: "Magnolia", ar: "ماغنوليا" },
+        ],
+      },
+      {
+        id: "q4",
+        image: "/beautiful-yellow-sunflower.jpg",
+        questionText: { en: "Name this sunny flower!", ar: "ما اسم هذه الزهرة المشمسة؟" },
+        correctAnswer: { en: "Sunflower", ar: "عباد الشمس" },
+        wrongAnswers: [
+          { en: "Marigold", ar: "قطيفة" },
+          { en: "Daffodil", ar: "نرجس" },
+          { en: "Dandelion", ar: "هندباء" },
+        ],
+      },
+      {
+        id: "q5",
+        image: "/beautiful-purple-lavender-flowers.jpg",
+        questionText: { en: "What fragrant flower is this?", ar: "ما هذه الزهرة العطرة؟" },
+        correctAnswer: { en: "Lavender", ar: "لافندر" },
+        wrongAnswers: [
+          { en: "Violet", ar: "بنفسج" },
+          { en: "Iris", ar: "سوسن" },
+          { en: "Lilac", ar: "ليلك" },
+        ],
+      },
+    ],
+  },
+]
+
 const StoreContext = createContext<StoreContextType | undefined>(undefined)
 
 export function StoreProvider({ children }: { children: ReactNode }) {
@@ -544,13 +613,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [sectionNames, setSectionNames] = useState<SectionNames>(defaultSectionNames)
   const [contentSettings, setContentSettings] = useState<ContentSettings>(defaultContentSettings)
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>(defaultGalleryImages)
-  const [reviews, setReviews] = useState<Review[]>(defaultReviews)
+  const [reviews, setReviews] = useState<Review[]>([])
   const [products, setProducts] = useState<Product[]>(defaultProducts)
   const [notifications, setNotifications] = useState<Notification[]>([])
-  const [categories, setCategories] = useState<Category[]>(defaultCategories)
-  const [adminTranslations, setAdminTranslations] = useState<AdminTranslations>(defaultAdminTranslations)
-  const [quizzes, setQuizzes] = useState<Quiz[]>([])
-  const [activeQuiz, setActiveQuiz] = useState<Quiz | null>(null)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [adminTranslations, setAdminTranslations] = useState<AdminTranslations>({})
+  const [quizzes, setQuizzes] = useState<Quiz[]>(defaultQuizzes)
+  const [activeQuiz, setActiveQuizState] = useState<Quiz | null>(defaultQuizzes[0] || null)
   const [quizResults, setQuizResults] = useState<QuizResult[]>([])
   const [mounted, setMounted] = useState(false)
 
@@ -636,7 +705,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (savedContentSettings) setContentSettings({ ...defaultContentSettings, ...JSON.parse(savedContentSettings) })
 
       const savedGalleryImages = localStorage.getItem("galleryImages")
-      if (savedGalleryImages) setGalleryImages(JSON.parse(savedGalleryImages))
+      if (savedGalleryImages) {
+        const parsed = JSON.parse(savedGalleryImages)
+        if (parsed.length > 0) {
+          setGalleryImages(parsed)
+        }
+      }
 
       const savedReviews = localStorage.getItem("reviews")
       if (savedReviews) setReviews(JSON.parse(savedReviews))
@@ -662,7 +736,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const parsedQuizzes = JSON.parse(savedQuizzes)
         setQuizzes(parsedQuizzes)
         const active = parsedQuizzes.find((q: Quiz) => q.isActive)
-        if (active) setActiveQuiz(active)
+        if (active) setActiveQuizState(active)
+      } else {
+        localStorage.setItem("quizzes", JSON.stringify(defaultQuizzes))
+        setActiveQuizState(defaultQuizzes[0] || null)
       }
 
       const savedQuizResults = localStorage.getItem("quizResults")
@@ -954,7 +1031,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         let updated = [...prev, newQuiz]
         if (newQuiz.isActive) {
           updated = updated.map((q) => (q.id === newQuiz.id ? q : { ...q, isActive: false }))
-          setActiveQuiz(newQuiz)
+          setActiveQuizState(newQuiz)
         }
         saveToStorage("quizzes", updated)
         return updated
@@ -970,7 +1047,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (quiz.isActive) {
           updated = updated.map((q) => (q.id === id ? q : { ...q, isActive: false }))
           const active = updated.find((q) => q.id === id)
-          if (active) setActiveQuiz(active)
+          if (active) setActiveQuizState(active)
         }
         saveToStorage("quizzes", updated)
         return updated
@@ -984,7 +1061,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setQuizzes((prev) => {
         const updated = prev.filter((q) => q.id !== id)
         saveToStorage("quizzes", updated)
-        if (activeQuiz?.id === id) setActiveQuiz(null)
+        if (activeQuiz?.id === id) setActiveQuizState(null)
         return updated
       })
     },
@@ -996,7 +1073,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setQuizzes((prev) => {
         const updated = prev.map((q) => ({ ...q, isActive: q.id === id }))
         const active = updated.find((q) => q.id === id)
-        if (active) setActiveQuiz(active)
+        if (active) setActiveQuizState(active)
         saveToStorage("quizzes", updated)
         return updated
       })

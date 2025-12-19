@@ -31,17 +31,16 @@ export function AdminDashboardClient() {
   const mostViewed = products.slice(0, 3)
 
   return (
-    <div className={`p-8 ${isRTL ? "font-arabic" : ""}`} dir={isRTL ? "rtl" : "ltr"}>
+    <div className={`p-4 md:p-6 lg:p-8 ${isRTL ? "font-arabic" : ""}`} dir={isRTL ? "rtl" : "ltr"}>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">{mounted ? t.title[locale] : "Dashboard"}</h1>
-        <p className="text-gray-500 mt-1">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900">{mounted ? t.title[locale] : "Dashboard"}</h1>
+        <p className="text-sm md:text-base text-gray-500 mt-1">
           {isRTL ? "مرحباً بعودتك! إليك ما يحدث في متجرك." : "Welcome back! Here's what's happening with your store."}
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 mb-6 md:mb-8">
         <StatsCard
           title={isRTL ? "إجمالي المبيعات" : "Total Sales"}
           value={`$${stats.totalSales.toLocaleString()}`}
@@ -67,12 +66,13 @@ export function AdminDashboardClient() {
         />
       </div>
 
-      {/* Second Row */}
-      <div className="grid lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
         {/* Most Viewed Products */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
+        <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-900">{isRTL ? "الأكثر مشاهدة" : "Most Viewed"}</h2>
+            <h2 className="font-semibold text-gray-900 text-sm md:text-base">
+              {isRTL ? "الأكثر مشاهدة" : "Most Viewed"}
+            </h2>
             <TrendingUp className="w-5 h-5 text-rose-500" />
           </div>
           <div className="space-y-4">
@@ -101,9 +101,11 @@ export function AdminDashboardClient() {
         </div>
 
         {/* Contact Messages */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
+        <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-900">{mounted ? t.recentMessages[locale] : "Recent Messages"}</h2>
+            <h2 className="font-semibold text-gray-900 text-sm md:text-base">
+              {mounted ? t.recentMessages[locale] : "Recent Messages"}
+            </h2>
             <MessageSquare className="w-5 h-5 text-rose-500" />
           </div>
           <div className="space-y-4">
@@ -127,29 +129,37 @@ export function AdminDashboardClient() {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm">
-        <h2 className="font-semibold text-gray-900 mb-4">{isRTL ? "إجراءات سريعة" : "Quick Actions"}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm">
+        <h2 className="font-semibold text-gray-900 mb-4 text-sm md:text-base">
+          {isRTL ? "إجراءات سريعة" : "Quick Actions"}
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           <a
             href="/admin/products/new"
-            className="flex flex-col items-center gap-2 p-4 bg-rose-50 rounded-xl hover:bg-rose-100 transition-colors"
+            className="flex flex-col items-center gap-2 p-3 md:p-4 bg-rose-50 rounded-xl hover:bg-rose-100 transition-colors"
           >
-            <Package className="w-6 h-6 text-rose-600" />
-            <span className="text-sm font-medium text-rose-700">{isRTL ? "إضافة منتج" : "Add Product"}</span>
+            <Package className="w-5 md:w-6 h-5 md:h-6 text-rose-600" />
+            <span className="text-xs md:text-sm font-medium text-rose-700 text-center">
+              {isRTL ? "إضافة منتج" : "Add Product"}
+            </span>
           </a>
           <a
             href="/admin/gallery"
-            className="flex flex-col items-center gap-2 p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors"
+            className="flex flex-col items-center gap-2 p-3 md:p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors"
           >
-            <Eye className="w-6 h-6 text-blue-600" />
-            <span className="text-sm font-medium text-blue-700">{isRTL ? "إدارة المعرض" : "Manage Gallery"}</span>
+            <Eye className="w-5 md:w-6 h-5 md:h-6 text-blue-600" />
+            <span className="text-xs md:text-sm font-medium text-blue-700 text-center">
+              {isRTL ? "إدارة المعرض" : "Manage Gallery"}
+            </span>
           </a>
           <a
             href="/admin/settings"
-            className="flex flex-col items-center gap-2 p-4 bg-green-50 rounded-xl hover:bg-green-100 transition-colors"
+            className="flex flex-col items-center gap-2 p-3 md:p-4 bg-green-50 rounded-xl hover:bg-green-100 transition-colors col-span-2 md:col-span-1"
           >
-            <DollarSign className="w-6 h-6 text-green-600" />
-            <span className="text-sm font-medium text-green-700">{isRTL ? "الإعدادات" : "Settings"}</span>
+            <DollarSign className="w-5 md:w-6 h-5 md:h-6 text-green-600" />
+            <span className="text-xs md:text-sm font-medium text-green-700 text-center">
+              {isRTL ? "الإعدادات" : "Settings"}
+            </span>
           </a>
         </div>
       </div>

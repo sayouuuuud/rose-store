@@ -17,12 +17,18 @@ import {
   Globe,
   HelpCircle,
   Bell,
+  X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useStore } from "@/lib/store-context"
 import { useLanguage } from "@/lib/language-context"
 
-export function AdminSidebar() {
+interface AdminSidebarProps {
+  isOpen?: boolean
+  onClose?: () => void
+}
+
+export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
   const pathname = usePathname()
   const { storeSettings, adminTranslations, notifications } = useStore()
   const { locale } = useLanguage()
@@ -67,12 +73,26 @@ export function AdminSidebar() {
 
   return (
     <aside
-      className={`fixed left-0 top-0 bottom-0 w-64 bg-card border-r border-border flex flex-col z-40 ${isRTL ? "font-arabic" : ""}`}
+      className={cn(
+        `fixed left-0 top-0 bottom-0 w-64 bg-card border-r border-border flex flex-col z-40 transition-transform duration-300`,
+        isRTL && "font-arabic",
+        // Hidden by default on mobile, visible on lg+
+        "max-lg:-translate-x-full lg:translate-x-0",
+        // When open on mobile, show it
+        isOpen && "max-lg:translate-x-0",
+      )}
     >
       {/* Logo */}
-      <div className="p-6 border-b border-border">
-        <h1 className="font-serif text-xl text-rose-900">{mounted ? storeSettings.storeName : "Whispering Petals"}</h1>
-        <p className="text-xs text-muted-foreground mt-1">{isRTL ? "لوحة الإدارة" : "Admin Panel"}</p>
+      <div className="p-6 border-b border-border flex items-center justify-between">
+        <div>
+          <h1 className="font-serif text-xl text-rose-900">
+            {mounted ? storeSettings.storeName : "Whispering Petals"}
+          </h1>
+          <p className="text-xs text-muted-foreground mt-1">{isRTL ? "لوحة الإدارة" : "Admin Panel"}</p>
+        </div>
+        <button onClick={onClose} className="lg:hidden p-2 hover:bg-accent rounded-lg transition-colors">
+          <X className="w-5 h-5 text-muted-foreground" />
+        </button>
       </div>
 
       {/* Navigation */}
@@ -85,6 +105,7 @@ export function AdminSidebar() {
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={onClose}
                   className={cn(
                     "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors relative",
                     isActive ? "bg-rose-500 text-white" : "text-muted-foreground hover:bg-accent hover:text-foreground",
